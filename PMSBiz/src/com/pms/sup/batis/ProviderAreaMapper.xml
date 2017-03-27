@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.pms.sup.batis.IProviderArea">
+
+	
+    <!-- 保存联系人信息 -->
+	<insert id="saveProviderArea">
+		insert into TProviderArea(pno,areano,state)
+		 values(#{pno}, #{areano}, #{state})
+	</insert>
+	<!-- 查询方案审批结果 -->
+	<!--<select id="getProviderPlanAudits" resultType="TProviderPlanAudit">
+		select * from TProviderPlanAudit order by aDate
+	</select>
+	
+
+--></mapper>

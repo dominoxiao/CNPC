@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:aop="http://www.springframework.org/schema/aop" xmlns:tx="http://www.springframework.org/schema/tx"
+	xsi:schemaLocation="
+		http://www.springframework.org/schema/beans
+		http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context
+		http://www.springframework.org/schema/context/spring-context.xsd
+		http://www.springframework.org/schema/aop
+        http://www.springframework.org/schema/aop/spring-aop-3.0.xsd
+        http://www.springframework.org/schema/tx
+        http://www.springframework.org/schema/tx/spring-tx-3.0.xsd">
+
+
+	<context:component-scan base-package="com.pms.sup.control" />
+	<context:component-scan base-package="com.pms.sup.biz" />
+	<context:component-scan base-package="com.pms.sup.dao" />
+
+
+	<bean id="jspViewResolver"
+		class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+		<property name="prefix" value="/WEB-INF/views/" />
+	</bean>
+
+	<!--配置数据源 -->
+	<bean id="dataSource"
+		class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+		<property name="driverClassName" value="oracle.jdbc.driver.OracleDriver" />
+		<property name="url" value="jdbc:oracle:thin:@10.0.17.252:1521:orcl" />
+		<property name="username" value="sup" />
+		<property name="password" value="654321" />
+	</bean>
+
+	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+		<property name="configLocation" value="classpath:mybatis.xml" />
+		<property name="dataSource" ref="dataSource" />
+	</bean>
+
+
+
+	<!--配置事务管理器 -->
+	<tx:annotation-driven transaction-manager="txManager" />
+
+	<bean id="txManager"
+		class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+		<property name="dataSource" ref="dataSource" />
+	</bean>
+
+	<bean id="baseMapper" class="org.mybatis.spring.mapper.MapperFactoryBean"
+		abstract="true" lazy-init="true">
+		<property name="sqlSessionFactory" ref="sqlSessionFactory" />
+	</bean>
+
+	<!--数据库接口映射配置 -->
+	<bean id="userMapper" parent="baseMapper">
+		<property name="mapperInterface" value="com.pms.sup.batis.IUser" />
+	</bean>
+	<bean id="complainMapper" parent="baseMapper">
+		<property name="mapperInterface" value="com.pms.sup.batis.IComplain" />
+	</bean>
+	<bean id="yearMoneyMapper" parent="baseMapper">
+		<property name="mapperInterface" value="com.pms.sup.batis.IYearMoney" />
+	</bean>
+    <bean id="providerChangeMapper" parent="baseMapper">
+		<property name="mapperInterface" value="com.pms.sup.batis.IProviderChange" />
+	</bean>
+	<bean id="providerPlanMapper" parent="baseMapper">
+		<property name="mapperInterface" value="com.pms.sup.batis.IProviderPlan" />
+	</bean>
+	<bean id="providerPlanAuditMapper" parent="baseMapper">
+		<property name="mapperInterface" value="com.pms.sup.batis.IProviderPlanAudit" />
+	</bean>
+	<bean id="contacterMapper" parent="baseMapper">
+		<property name="mapperInterface" value="com.pms.sup.batis.IContacter" />
+	</bean>
+	<bean id="providerApplyMapper" parent="baseMapper">
+		<property name="mapperInterface" value="com.pms.sup.batis.IProviderApply" />
+	</bean>
+	<bean id="providerAreaMapper" parent="baseMapper">
+		<property name="mapperInterface" value="com.pms.sup.batis.IProviderArea" />
+	</bean>
+	<bean id="areaMapper" parent="baseMapper">
+		<property name="mapperInterface" value="com.pms.sup.batis.IArea" />
+	</bean>
+	<bean id="providerDetailMapper" parent="baseMapper">
+		<property name="mapperInterface" value="com.pms.sup.batis.IProviderDetail" />
+	</bean>
+	<bean id="companyMapper" parent="baseMapper">
+		<property name="mapperInterface" value="com.pms.sup.batis.ICompany" />
+	</bean>
+	<bean id="qualificationMapper" parent="baseMapper">
+		<property name="mapperInterface" value="com.pms.sup.batis.IQualification" />
+	</bean>
+	<bean id="providerAuditMapper" parent="baseMapper">
+		<property name="mapperInterface" value="com.pms.sup.batis.IProviderAudit" />
+	</bean>
+	<bean id="providerMapper" parent="baseMapper">
+		<property name="mapperInterface" value="com.pms.sup.batis.IProvider" />
+	</bean>
+		
+	
+	<bean id="queryproMapper" parent="baseMapper">
+		<property name="mapperInterface" value="com.pms.sup.batis.IQueryProduct" />
+	</bean>
+	<bean id="productApplyMapper" parent="baseMapper">
+		<property name="mapperInterface" value="com.pms.sup.batis.IProductApply" />
+	</bean>
+	<bean id="productCheckMapper" parent="baseMapper">
+		<property name="mapperInterface" value="com.pms.sup.batis.IProductCheck" />
+	</bean>
+	
+
+
+	<bean id="providerGoodsMapper" parent="baseMapper">
+		<property name="mapperInterface" value="com.pms.sup.batis.IProviderGoods" />
+	</bean>
+	<bean id="goodsCutApplyMapper" parent="baseMapper">
+		<property name="mapperInterface" value="com.pms.sup.batis.IGoodsCutApply" />
+	</bean>
+
+
+	<bean id="multipartResolver"
+		class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+		<property name="defaultEncoding" value="utf-8"></property>
+	</bean>
+
+	<bean id="handlerMapping"
+		class="org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping">
+
+	</bean>
+	
+	<bean class="org.springframework.web.servlet.handler.SimpleMappingExceptionResolver">
+		<property name="exceptionMappings">
+			<props>
+				<prop key="java.lang.Throwable">/error.jsp</prop>
+			</props>
+		</property>
+	</bean>
+
+	<!-- JSON解析 -->
+	<bean
+		class="org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter">
+		<property name="messageConverters">
+			<list>
+				<bean
+					class="org.springframework.http.converter.ByteArrayHttpMessageConverter" />
+				<ref bean="mappingJacksonHttpMessageConverter" />
+			</list>
+		</property>
+	</bean>
+
+	<bean id="mappingJacksonHttpMessageConverter"
+		class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter">
+		<property name="supportedMediaTypes">
+			<list>
+				<value>text/html;charset=utf-8</value>
+				<value>application/json;charset=utf-8</value>
+			</list>
+		</property>
+	</bean>
+
+
+
+</beans>

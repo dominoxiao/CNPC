@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.pms.sup.batis.IProductCheck">
+
+	<select id="ProductCheck" parameterType="String" resultType="com.pms.sup.entity.TGoodsApply">
+	 SELECT * FROM TGoodsApply WHERE state=#{state}
+	</select>
+	<select id="QueryApply" parameterType="com.pms.sup.entity.TGoodsApply" resultType="com.pms.sup.entity.TGoodsApply">
+	 SELECT * FROM TGoodsApply WHERE pno=#{pno} AND gno=#{gno}
+	</select>
+    <insert id="ApplySubmit" parameterType="com.pms.sup.entity.TGoodsAudit">
+	   insert into TGoodsAudit(pdno,adate,ainfo,isagree) 
+	   values(#{pdno},to_date(#{adate},'yyyy-mm-dd'),#{ainfo},#{isagree})
+	</insert>
+	<update id="ModState" parameterType="com.pms.sup.entity.TGoodsApply">
+	  update TGoodsApply set state=#{state} where pano=#{pano}
+	</update>
+</mapper>

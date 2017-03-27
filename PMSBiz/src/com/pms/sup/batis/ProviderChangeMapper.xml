@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.pms.sup.batis.IProviderChange">
+
+	<!-- 获取信息变更申请记录-->
+	<select id="getChangeRecord" resultType="TProviderChange">
+		select * from tproviderchange t
+	</select>
+
+	<!-- 获取信息准入申请记录 -->
+	<select id="getProviderApply" resultType="TProviderApply">
+		select * from tproviderapply t where t.pano = #{pano}
+	</select>
+	
+	<!-- 获取信息准入申请号 -->
+	<select id="getProviderApplyID" resultType="String">
+		select * from tprovider t where t.pno = #{pno}
+	</select>
+	
+	<!-- 获取准入信息（根据供应商编号） -->
+	<select id="getProvider" resultType="TProvider">
+		select * from tprovider t where t.pno = #{pno}
+	</select>
+	
+	<!-- 提交信息变更申请 -->
+	<insert id="addModifyApply" parameterType="TProviderChange">
+	    insert into tproviderchange(applyno, pno, pname, ptype, ptype2, amount, ranke, gsregno,
+		taxguo, taxdi, orgcode, agent, address, pfrom, country, paddress, details, zipcode, bizscope,
+		qm, qmorg, qc, qcorg, mlan, awards, fname, ctype, hytype, bigtype, zczb, begindate, bank, bankno,
+		creditlevel, tel, fax, address2, applydate, state, atype, cname, mobile, phone, email)
+		values(seq_accusation.nextval, #{pno}, #{pname}, #{ptype}, #{ptype2}, #{amount}, #{ranke}, #{gsRegno}, #{taxguo}, #{taxdi}, 
+		#{orgcode}, #{fname}, #{address}, #{pfrom}, #{country}, #{paddress}, #{details}, #{zipcode}, #{bizscope}, #{qm}, 
+		#{qmOrg}, #{qc}, #{qcOrg}, #{mlan},#{awards}, #{fname}, #{ctype}, #{hytype}, #{bigtype}, #{zczb}, #{begindate}, #{bank}, 
+		#{bankno}, #{creditLevel}, #{tel}, #{fax}, #{address}, #{applyDate}, #{state}, #{atype},
+		#{cname}, #{mobile}, #{phone}, #{email})
+	</insert>
+	
+	<!-- 获取信息准入申请记录（联系人） -->
+	<select id="getProviderApplyContacter" resultType="TContacter">
+		select * from tcontacter t where t.pano = #{pano}
+	</select>
+	
+	<!-- 获取信息准入申请记录（所在公司情况） -->
+	<select id="getProviderApplyCompany" resultType="TCompany">
+		select * from tcompany t where t.pano = #{pano}
+	</select>
+	
+	<!-- 获取信息准入申请记录（详细信息） -->
+    <select id="getProviderApplyDetail" resultType="TProviderDetail">
+		select * from tproviderdetail t where t.pano = #{pano}
+	</select>
+	
+	<!-- 查询信息变更申请（根据供应商编号） -->
+	<select id="getModifyApplyID" resultType="String">
+		select applyno from tproviderchange t where t.pno = #{pno} order by applyno desc
+	</select>	
+	
+	<!-- 查询信息变更申请 -->
+	<select id="getModifyApplyRecords" resultType="TProviderChange">
+		select * from tproviderchange t 
+		<where>
+		    <if test="pno != null and pno != ''">
+				AND t.pno = #{pno}
+			</if>
+			<if test="state != null and state != ''">
+				AND t.state = #{state}
+			</if>
+		</where>
+		order by applyno desc
+	</select>
+	
+	<!-- 提交变更申请证明材料 -->
+    <insert id="addChangeData" parameterType="TProviderChangeData">
+	    insert into tproviderchangedata(aid, applyno, name, fujian)
+		values(SEQ_TPROVIDERCHANGEDATA.nextval, #{applyno}, #{name}, #{fujian})
+	</insert>
+	
+	<!-- 提交变更申请审批 -->
+	<insert id="addChangeAuditData" >
+		insert into tproviderchangeaudit(aid, applyno, adate, ainfo, person, aorg, isagree, synchro)
+		values(SEQ_TPROVIDERCHANGEAUDIT.nextval, #{applyno}, #{adate}, #{ainfo}, #{person}, #{aorg}, #{isagree}, #{synchro})
+	</insert>
+	
+		<!-- 供应商提交新的申请单的处理状态 -->
+	<update id="updateModifyApplyState" parameterType="TProviderChange">
+		update tproviderchange
+		<trim prefix="set" suffixOverrides=",">
+			<if test="state!=null">state=#{state},</if>
+		</trim>
+		where applyno=#{applyno}
+	</update>
+	
+	
+	
+	<!-- 获取信息变更申请列表-->
+	<select id="findModifyApplyList" parameterType="Map" resultType="TProviderChange">
+		SELECT * FROM
+		(
+		SELECT A.*, ROWNUM RN
+		FROM (
+		SELECT * FROM tproviderchange a
+		<where>
+			<if test="acno != null and acno != ''">
+				and acno = #{acno}
+		    </if>
+		    <if test="pno != null and pno != ''">
+				and a.pno = #{pno}
+		    </if>
+			<if test="startDate != null">
+				<![CDATA[ and a.applydate >= #{startDate} ]]>
+			</if>
+			<if test="endDate != null">
+			    <![CDATA[ and a.applydate <= #{endDate} ]]>
+			</if>
+		</where>
+		) A   
+			<![CDATA[ WHERE ROWNUM <= #{limit}]]>
+		)  
+		<![CDATA[ WHERE RN > #{offset}]]>
+	</select>
+
+	<!-- 获取信息变更总数 -->
+	<select id="countModifyApply" parameterType="Map" resultType="Integer">
+		select count(*) from tproviderchange a
+		<where>
+			<if test="acno != null and acno != ''">
+				and a.acno = #{acno}
+		    </if>
+		    <if test="pno != null and pno != ''">
+				and a.pno = #{pno}
+		    </if>
+			<if test="startDate != null">
+			    <![CDATA[ and a.applydate >= #{startDate} ]]>
+			</if>
+			<if test="endDate != null">
+				<![CDATA[ and a.applydate <= #{endDate} ]]>
+			</if>
+		</where>
+	</select>
+	
+	
+	
+
+</mapper>

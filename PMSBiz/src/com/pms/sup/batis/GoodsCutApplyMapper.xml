@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.pms.sup.batis.IGoodsCutApply">
+
+	<resultMap id="GoodsCutListMap" type="TGoodsCutApply">
+		<id column="pcno" property="pcno"/>
+		<result column="pno" property="pno"/>
+		<result column="gno" property="gno"/>
+		<result column="applydate" property="applydate"/>
+		<result column="cutinfo" property="cutinfo"/>
+		<result column="state" property="state"/>
+		<collection property="goods" ofType="TGoods2">
+			<id column="g_no" property="gno"/>
+			<result column="g_name" property="gname"/>
+			<result column="g_istactic" property="IsTactic"/>
+		</collection>
+	</resultMap>
+	
+	<!-- 查询减少产品信息  --> 
+	<select id="findApplyGoods" parameterType="String" resultMap="GoodsCutListMap">
+		select gc.pcno, gc.pno, gc.gno, gc.applydate, gc.cutinfo ,gc.state, g.gno g_no, g.gname g_name, g.istactic g_istactic 
+		from TGoodsCutApply gc, TGoods2 g
+		where gc.pno=#{id} and gc.gno=g.gno
+	</select>
+	
+	<!-- 查询所有减少产品信息  --> 
+	<select id="findAllApplyGoods" resultMap="GoodsCutListMap">
+		select gc.pcno, gc.pno, gc.gno, gc.applydate, gc.cutinfo ,gc.state, g.gno g_no, g.gname g_name, g.istactic g_istactic 
+		from TGoodsCutApply gc, TGoods2 g
+		where gc.gno=g.gno and gc.state='未审核'
+	</select>
+	
+	<!-- 查询产品信息   
+	<select id="ApplyGoods" parameterType="String" resultType="TGoodsCutApply">
+		select * from TGoodsCutApply where pno=#{id}
+	</select>-->
+	
+	<!-- 插入减少产品信息  --> 
+	<insert id="insertCutGoodsApply" parameterType="TGoodsCutApply">
+	   insert into TGoodsCutApply(pno,gno,applyDate,cutinfo,state) 
+	   values(#{pno},#{gno},to_date(#{applyDate},'yyyy-mm-dd'),#{cutinfo},#{state})
+	</insert>
+	
+	
+</mapper>

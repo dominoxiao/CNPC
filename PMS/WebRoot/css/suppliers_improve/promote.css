@@ -1,0 +1,49 @@
+@CHARSET "UTF-8";
+.write{
+	width:99%;
+	height:200px;
+	overflow-y:auto;
+}
+.submit{
+	width: 250px;
+	margin-left: 45%;
+	margin-top:2%; 
+}
+.query .easyui-linkbutton{
+	width:110px;
+	margin-left:90%;
+	
+}
+.setscroll{
+	overflow-y:auto;
+	height:100px;
+	font-family:宋体;
+	font-size: 15px;
+	line-height: 20px;
+	letter-spacing:5px;
+}
+.fileload{
+	margin-left: 10px;
+	margin-bottom:10px; 
+}
+.fileload input{
+	height:25px;
+}
+.query-con{
+	display:inline-block;
+	width:100px;
+}
+.easyui-linkbutton {
+	margin-right:5px
+}
+.conditions.hide {
+	display:none
+}
+.conditions .con-span {
+	display:inline-block;
+	width:70px
+}
+.opt-buttons {
+	margin-left:-20px
+}
+

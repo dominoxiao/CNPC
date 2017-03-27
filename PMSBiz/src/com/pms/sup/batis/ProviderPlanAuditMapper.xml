@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.pms.sup.batis.IProviderPlanAudit">
+
+	
+    <!-- 供应商准入方案审核 -->
+	<insert id="saveProviderPlanAudit">
+		insert into TProviderPlanAudit(planid,aDate,ainfo,aorg,isagree) values(#{planid}, #{aDate}, #{ainfo}, #{aorg},#{isagree})
+	</insert>
+	<!-- 查询方案审批结果 -->
+	<select id="getProviderPlanAudits" resultType="TProviderPlanAudit">
+		select * from TProviderPlanAudit order by aDate
+	</select>
+
+</mapper>

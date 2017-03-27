@@ -1,0 +1,118 @@
+.easyui-linkbutton {
+    margin-right: 5px
+}
+
+.opt-buttons {
+    margin-left: -20px
+}
+
+.container {
+    position: absolute;
+    width: 100%;
+    top: 0;
+    bottom: 0;
+    /*overflow: scroll;*/
+    /*padding-left: 168px*/
+}
+
+.container .content {
+    padding: 20px;
+    min-height: 200px;
+    /*overflow: scroll;*/
+}
+
+.approval-content {
+    padding: 10px;
+    padding-left: 50px;
+    min-height: 200px;
+    overflow: scroll;
+}
+
+.container .content .basic-info {
+    padding: 10px
+}
+
+.container .content .tabs-header {
+    background-color: #fff;
+    border-width: 0
+}
+
+.container .content .tabs li {
+    border-top: 1px solid #bfbfbf;
+    border-radius: 3px 3px 0 0
+}
+
+.container .content .tabs li.tabs-selected {
+    border-top: 2px solid #1da02b
+}
+
+.container .content .tabs li.tabs-selected a.tabs-inner {
+    color: #000;
+    background-color: #fff
+}
+
+.container .content .tabs li a.tabs-inner {
+    color: #000;
+    background-color: #e3e3e3
+}
+
+.container .content .tabs li a.tabs-inner .tabs-title {
+    font-size: 14px
+}
+
+.container .content .column {
+    position: relative;
+    height: 23px;
+    border-bottom: 1px solid #d4d4d4;
+    margin-bottom: 10px
+}
+
+.container .content .column span.current {
+    position: relative;
+    top: 0px;
+    display: inline-block;
+    color: #666;
+    font-size: 12px;
+    font-weight: bold;
+    height: 22px;
+    line-height: 22px;
+    border-bottom: 2px solid #ff9d02
+}
+
+.container .content table.yes-not.kv-table td.kv-label {
+    width: 130px
+}
+
+.container .content table.kv-table {
+    margin-bottom: 20px
+}
+
+.container .content table.kv-table td.kv-label {
+    height: 26px;
+    font-size: 12px
+}
+
+.container .content table.kv-table td.kv-content {
+    height: 26px;
+    font-size: 12px
+}
+
+.container .content table.kv-table td.kv-content a {
+    color: #444;
+    text-decoration: none
+}
+
+.container .content table.kv-table td.kv-content a:hover {
+    text-decoration: underline
+}
+
+.inputwidth {
+    width:200px;
+    height:30px;
+    line-height:30px;
+}
+
+.list-padding {
+    padding-bottom: 10px;
+}
+

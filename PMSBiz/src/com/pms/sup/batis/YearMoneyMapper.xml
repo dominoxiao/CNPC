@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.pms.sup.batis.IYearMoney">
+
+	<!-- 获取年费收缴记录列表-->
+	<select id="findYearMoneyList" parameterType="Map" resultType="TYearMoney">
+		SELECT * FROM
+		(
+		SELECT A.*, ROWNUM RN
+		FROM (
+		SELECT * FROM tyearmoney t
+			<where>
+				<if test="pno != null and pno != ''">
+					AND t.pno = #{pno}
+				</if>
+			</where>
+		) A   
+			<![CDATA[ WHERE ROWNUM <= #{limit}]]>
+		)  
+		<![CDATA[ WHERE RN > #{offset}]]>
+	</select>
+
+	<!-- 获取年费收缴记录总数 -->
+	<select id="countYearMoney" parameterType="TYearMoney"
+		resultType="Integer">
+		select count(*) from tyearmoney t
+	</select>
+	
+	<!-- 提交缴费记录 -->
+    <insert id="addYearMoneyRecord">
+		insert into tyearmoney (aid, pno, pdate, pmoney, ptype, empno)
+		values(seq_tyearmoney.nextval, #{pno}, #{pdate}, #{pmoney}, #{ptype},#{empno})
+	</insert>
+	
+</mapper>

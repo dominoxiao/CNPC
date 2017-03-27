@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app version="2.5" xmlns="http://java.sun.com/xml/ns/javaee"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee 
+	http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd">
+
+	<servlet>
+		<servlet-name>CoreDispatcherServlet</servlet-name>
+		<servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+		<init-param>
+			<param-name>contextConfigLocation</param-name>
+			<param-value>/WEB-INF/spring-mvc.xml</param-value>
+		</init-param>
+		<load-on-startup>1</load-on-startup>
+	</servlet>
+	
+	<servlet-mapping>
+		<servlet-name>CoreDispatcherServlet</servlet-name>
+		<url-pattern>*.do</url-pattern>
+	</servlet-mapping>
+	
+	<filter>
+        <filter-name>encodingFilter</filter-name>
+        <filter-class>org.springframework.web.filter.CharacterEncodingFilter</filter-class>
+        <init-param>
+            <param-name>encoding</param-name>
+            <param-value>UTF-8</param-value>
+        </init-param>
+    </filter>
+    <filter-mapping>
+        <filter-name>encodingFilter</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
+    
+    <!-- 用户登录拦截 -->
+    <filter>
+		<filter-name>UserAuthFilter</filter-name>
+		<filter-class>com.pms.sup.filter.UserAuthFilter</filter-class>
+		<init-param>  
+			<param-name>excludedPages</param-name>  
+			<param-value>/user/login.do</param-value>  
+		</init-param> 
+	</filter>
+	<filter-mapping>
+		<filter-name>UserAuthFilter</filter-name>
+		<url-pattern>/user/*</url-pattern>
+	</filter-mapping>
+	
+	<!-- 供应商拦截 -->
+	<filter>
+		<filter-name>ProviderAuthFilter</filter-name>
+		<filter-class>com.pms.sup.filter.ProviderAuthFilter</filter-class>
+	</filter>
+	<filter-mapping>
+		<filter-name>ProviderAuthFilter</filter-name>
+		<url-pattern>/provider/*</url-pattern>
+	</filter-mapping>
+	
+	<!-- 管理员拦截 -->
+    <filter>
+		<filter-name>AdminAuthFilter</filter-name>
+		<filter-class>com.pms.sup.filter.AdminAuthFilter</filter-class>
+	</filter>
+	<filter-mapping>
+		<filter-name>AdminAuthFilter</filter-name>
+		<url-pattern>/admin/*</url-pattern>
+	</filter-mapping>
+	
+	<welcome-file-list>
+		<welcome-file>index.jsp</welcome-file>
+	</welcome-file-list>
+</web-app>

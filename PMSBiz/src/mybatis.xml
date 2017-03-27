@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD Config 3.0//EN" "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+
+	<settings>
+		<setting name="jdbcTypeForNull" value="NULL" />
+	</settings>
+
+	<typeAliases>
+	    <package name="com.pms.sup.entity"></package>
+	</typeAliases>
+
+	<mappers>
+	    <!-- Zhemin -->
+		<mapper resource="com/pms/sup/batis/UserMapper.xml" />
+		<mapper resource="com/pms/sup/batis/ComplainMapper.xml" />
+		<mapper resource="com/pms/sup/batis/YearMoneyMapper.xml" />
+		<mapper resource="com/pms/sup/batis/ProviderChangeMapper.xml" />
+		<!--Xueting -->
+		<mapper resource="com/pms/sup/batis/ProviderPlanMapper.xml" />
+		<mapper resource="com/pms/sup/batis/ProviderPlanAuditMapper.xml" />
+		<mapper resource="com/pms/sup/batis/ContacterMapper.xml" />
+		<mapper resource="com/pms/sup/batis/ProviderApplyMapper.xml" />
+		<mapper resource="com/pms/sup/batis/ProviderAreaMapper.xml" />
+		<mapper resource="com/pms/sup/batis/AreaMapper.xml" />
+		<mapper resource="com/pms/sup/batis/ProviderDetailMapper.xml" />
+		<mapper resource="com/pms/sup/batis/CompanyMapper.xml" />
+		<mapper resource="com/pms/sup/batis/QualificationMapper.xml" />
+		<mapper resource="com/pms/sup/batis/ProviderAuditMapper.xml" />
+		<mapper resource="com/pms/sup/batis/ProviderMapper.xml" />
+		<!-- sunli -->
+		<mapper resource="com/pms/sup/batis/QueryProMapper.xml" />
+		<mapper resource="com/pms/sup/batis/ProductApplyMapper.xml" />
+		<mapper resource="com/pms/sup/batis/GoodsCheckMapper.xml" />
+		<!-- Yuzeping -->
+	    <mapper resource="com/pms/sup/batis/ProviderGoodsMapper.xml" />
+		<mapper resource="com/pms/sup/batis/GoodsCutApplyMapper.xml" />
+	</mappers>
+	
+	
+</configuration>

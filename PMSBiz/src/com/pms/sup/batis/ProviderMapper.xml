@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.pms.sup.batis.IProvider">
+
+	
+    <!-- 保存供应商 -->
+	<insert id="saveProvider">
+		insert into TProvider(pno,pano,pname,certificateno,pubDate,endDate,state) values(#{pno},#{pano}, #{pname}, #{certificateno}, #{pubDate},#{endDate},#{state})
+	</insert>
+	
+	
+
+</mapper>

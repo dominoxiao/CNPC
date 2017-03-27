@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.pms.sup.batis.IComplain">
+
+	<!-- 结果映射 -->
+	<resultMap type="TComplain" id="ComplainMap">
+		<id column="acno" property="acno" />
+		<result column="pno" property="pno" />
+		<result column="title" property="title" />
+		<result column="attachment" property="attachment" javaType="byte[]"
+			jdbcType="BLOB" typeHandler="org.apache.ibatis.type.BlobTypeHandler" />
+		<association column="acno" property="complainDeal"
+			javaType="com.pms.sup.entity.TComplainDeal" select="getComplainDealByID" />
+	</resultMap>
+
+
+	<!-- 获取全部投诉信息 -->
+	<select id="getComplain" parameterType="TComplain" resultMap="ComplainMap">
+		select * from taccusation t
+		<where>
+			<if test="acno != null and acno != ''">
+				AND t.acno = #{acno}
+			</if>
+		</where>
+	</select>
+
+	<!-- 投诉单列表 -->
+	<select id="findList" parameterType="Map" resultMap="ComplainMap">
+		SELECT * FROM
+		(
+		SELECT A.*, ROWNUM RN
+		FROM (
+		SELECT * FROM taccusation a left outer join taccusationdeal b on a.acno =
+		b.acno
+		<where>
+			<if test="title != null and title != ''">
+				AND a.title like '%'||#{title}||'%'
+					</if>
+			<if test="state != null and state != ''">
+				and b.astate = #{state}  
+		            </if>
+			<if test="acno != null and acno != ''">
+				and a.acno = #{acno}
+		            </if>
+			<if test="pno != null and pno != ''">
+				and a.pno = #{pno}
+		            </if>
+			<if test="startDate != null">
+				        <![CDATA[ and a.adate >= #{startDate} ]]>
+			</if>
+			<if test="endDate != null">
+				      	<![CDATA[ and a.adate <= #{endDate} ]]>
+			</if>
+		</where>
+		) A   
+			<![CDATA[ WHERE ROWNUM <= #{limit}]]>
+		)  
+		<![CDATA[ WHERE RN > #{offset}]]>
+	</select>
+
+	<!-- 获取投诉单总数 -->
+	<select id="count" parameterType="TComplain" resultType="Integer">
+		select count(*) from taccusation a left outer join taccusationdeal b
+		on a.acno = b.acno
+		<where>
+			<if test="title != null and title != ''">
+				AND title like '%'||#{title}||'%'
+			</if>
+			<if test="acno != null and acno != ''">
+				and a.acno = #{acno}
+		    </if>
+			<if test="pno != null and pno != ''">
+				and a.pno = #{pno}
+		    </if>
+			<if test="startDate != null">
+		        <![CDATA[ and a.adate >= #{startDate} ]]>
+			</if>
+			<if test="endDate != null">
+		      	<![CDATA[ and a.adate <= #{endDate} ]]>
+			</if>
+			<if test="state != null and state != ''">
+				and b.astate = #{state}  
+		    </if>
+		</where>
+	</select>
+
+	<!-- 根据投诉编号获取投诉处理单 -->
+	<select id="getComplainDealByID" resultType="TComplainDeal">
+		select * from taccusationdeal t where acno = #{acno}
+    </select>
+
+	<!-- 根据投诉编号获取投诉处理单附件 -->
+	<select id="getComplainFile" resultMap="ComplainMap">
+		select attachment from taccusation t where acno = #{acno}
+    </select>
+
+	<!-- 供应商提交新的申请单 -->
+	<insert id="addComplain">
+		insert into
+		taccusation(acno,pno,title,adate,detail,unit,org,name,tel,email,united,orged,named,reason,explain,attachment)
+		values(seq_accusation.nextval, #{pno}, #{title}, #{adate}, #{detail},
+		#{unit}, #{org}, #{name}, #{tel}, #{email}, #{united}, #{orged},
+		#{named},
+		#{reason}, #{explain}, #{attachment})
+	</insert>
+
+	<!-- 供应商提交新的申请单的处理状态 -->
+	<update id="addComplainDeal" parameterType="TComplainDeal">
+		update taccusationdeal
+		<trim prefix="set" suffixOverrides=",">
+			<if test="acno!=null">acno=#{acno},</if>
+			<if test="person!=null">person=#{person},</if>
+			<if test="ainfo!=null">ainfo=#{ainfo},</if>
+			<if test="aorg!=null">aorg=#{aorg},</if>
+			<if test="astate!=null">astate=#{astate},</if>
+			<if test="adate!=null">adate=#{adate},</if>
+			<if test="astatus!=null">astatus=#{astatus},</if>
+		</trim>
+		where acno=#{acno}
+	</update>
+
+	<!-- 提交投诉处理审批-->
+	<insert id="addComplainDealAudit">
+		insert into taccusationdealresultaudit(aid, acno,
+		aorg, pcno, ainfo, adate, isagree)
+		values(seq_accusation.nextval, #{acno}, #{aorg}, #{pcno}, #{ainfo}, #{adate}, #{isagree})
+	</insert>
+
+	<!-- 获取投诉处理审批列表 -->
+	<select id="findAuditList" parameterType="Map" resultType="TComplainDealAudit">
+		SELECT * FROM
+		(
+		SELECT A.*, ROWNUM RN
+		FROM (
+		SELECT * FROM taccusationdealresultaudit
+		<where>
+			<if test="acno != null and acno != ''">
+				and acno = #{acno}
+		    </if>
+		</where>
+		) A   
+			<![CDATA[ WHERE ROWNUM <= #{limit}]]>
+		)  
+		<![CDATA[ WHERE RN > #{offset}]]>
+	</select>
+
+	<!-- 获取投诉处理审批总数 -->
+	<select id="countAudit" parameterType="TComplainDealAudit"
+		resultType="Integer">
+		select count(*) from taccusationdealresultaudit
+		<where>
+			<if test="acno != null and acno != ''">
+				and acno = #{acno}
+		    </if>
+		</where>
+	</select>
+
+
+</mapper>

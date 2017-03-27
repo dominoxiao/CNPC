@@ -1,0 +1,41 @@
+.easyui-linkbutton {
+    margin-right: 5px
+}
+.container {
+    position: absolute;
+    width: 100%;
+    top: 0;
+    bottom: 0;
+    /*overflow: scroll;*/
+    /*padding-left: 168px*/
+}
+
+.content {
+    padding: 15px;
+}
+
+.container .content .column {
+    position: relative;
+    height: 23px;
+    border-bottom: 1px solid #d4d4d4;
+    margin-bottom: 10px
+}
+
+.container .content .column span.current {
+    position: relative;
+    top: 0px;
+    display: inline-block;
+    color: #666;
+    font-size: 16px;
+/*    font-weight: bold;*/
+    height: 22px;
+    line-height: 22px;
+    border-bottom: 2px solid #ff9d02
+}
+
+/*.panel-title {
+    height: 38px;
+    line-height: 38px;
+    color: #444 !important;
+    font-size: 13px;
+}*/

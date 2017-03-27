@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.pms.sup.batis.IProductApply">
+
+	<insert id="productApply" parameterType="com.pms.sup.entity.TGoodsApply">
+	   insert into TGoodsApply(pno,gno,zrType,recdept,guestDept,applyDate,state) 
+	   values(#{pno},#{gno},#{zrType},#{recdept},#{guestDept},to_date(#{applyDate},'yyyy-mm-dd'),#{state})
+	</insert>
+
+</mapper>

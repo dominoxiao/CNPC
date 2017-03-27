@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.pms.sup.batis.IProviderApply">
+
+	
+    <!-- 保存供应商准入申请表 -->
+	<insert id="saveProviderApply">
+		insert into TProviderApply(pano,planid,pname,ptype,ptype2,amount,ranke,gsRegno,taxguo,taxdi,orgcode,agent,address,pfrom,applyDate,state,applyarea)
+		 values(#{pano}, #{planid}, #{pname}, #{ptype},#{ptype2},#{amount},#{ranke},#{gsRegno},#{taxguo},#{taxdi},#{orgcode},#{agent},#{address},#{pfrom},#{applyDate},#{state},#{applyarea})
+	</insert>
+	<!-- 查询供应商准入申请 -->
+	<select id="selecAppliesByState" resultType="TProviderApply">
+		select * from TProviderApply where state=#{state} order by applyDate
+	</select>
+	<select id="selecAppliesByStateAndPano" resultType="TProviderApply">
+		select * from TProviderApply where state=#{0} and pano=#{1}
+	</select>
+	<update id="updateApplyState">
+	   update TProviderApply set state=#{0} where pano=#{1}
+	</update>
+	<!-- 根据供应商申请编号进行查询 -->
+	<select id="selectProviderApplyByPano" resultType="TProviderApply">
+		select * from TProviderApply where pano=#{pano}
+	</select>
+	
+
+</mapper>
